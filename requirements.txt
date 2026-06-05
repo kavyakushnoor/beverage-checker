@@ -1,13 +1,13 @@
 # Core scientific stack
 numpy==1.26.4
-pillow==10.3.0
+pillow>=10.4.0
 opencv-python-headless==4.9.0.80
 
 # OCR
 easyocr==1.7.1
 
 # PyTorch CPU (compatible with Python 3.11 + NumPy 1.26.x)
-torch==2.2.2
+torch
 torchvision==0.17.2
 torchaudio==2.2.2
 
