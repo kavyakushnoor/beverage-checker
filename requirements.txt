@@ -1,19 +1,9 @@
-# Core scientific stack
-numpy==1.26.4
-pillow>=10.4.0
-opencv-python-headless==4.9.0.80
-
-# OCR
-easyocr==1.7.1
-
-# PyTorch CPU (compatible with Python 3.11 + NumPy 1.26.x)
-torch
-torchvision==0.17.2
-torchaudio==2.2.2
-
-# App framework
 streamlit==1.33.0
-
-# Utilities
-pandas==2.2.2
-rapidfuzz==3.6.1
+numpy==1.26.4
+pillow==10.3.0
+opencv-python-headless==4.9.0.80
+easyocr==1.7.1
+torch==2.2.2
+torchvision==0.17.2
+scikit-image==0.22.0
+python-dotenv==1.0.1
