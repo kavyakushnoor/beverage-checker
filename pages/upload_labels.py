@@ -1,39 +1,48 @@
 import streamlit as st
 from PIL import Image
-from concurrent.futures import ThreadPoolExecutor
-from ocr import extract_text
 from rules import evaluate_rules
+from ocr import extract_text
 
-st.title("📤 Bulk Upload Labels")
+def render():
+    st.title("Upload Label Image")
 
-if "results" not in st.session_state:
-    st.session_state.results = []
+    st.write("Upload one or more beverage label images for compliance checking.")
 
-def process_image(file_obj, file_name):
-    image = Image.open(file_obj)
-    text = extract_text(image)
-    result = evaluate_rules(text)
-    return {
-        "file": file_name,
-        "status": result["status"],
-        "issues": "; ".join(result["issues"]),
-        "text": text
-    }
+    uploaded_files = st.file_uploader(
+        "Upload label images",
+        type=["png", "jpg", "jpeg"],
+        accept_multiple_files=True
+    )
 
-uploaded_files = st.file_uploader(
-    "Upload beverage labels",
-    type=["png", "jpg", "jpeg"],
-    accept_multiple_files=True
-)
+    if uploaded_files:
+        for file in uploaded_files:
+            st.divider()
+            st.subheader(file.name)
 
-if uploaded_files:
-    progress = st.progress(0)
+            image = Image.open(file)
+            st.image(image, use_column_width=True)
 
-    jobs = [(f, f.name) for f in uploaded_files]
+            with st.spinner("Extracting text..."):
+                text = extract_text(image)
 
-    with ThreadPoolExecutor() as executor:
-        for idx, res in enumerate(executor.map(lambda x: process_image(*x), jobs)):
-            st.session_state.results.append(res)
-            progress.progress((idx + 1) / len(uploaded_files))
+            st.subheader("Extracted Text")
+            st.text(text)
 
-    st.success("Processing complete! Go to the Results page.")
+            with st.spinner("Evaluating rules..."):
+                result = evaluate_rules(text)
+
+            st.subheader("Compliance Result")
+
+            if result["status"] == "PASS":
+                st.success("PASS")
+            elif result["status"] == "WARNING":
+                st.warning("WARNING")
+            else:
+                st.error("FAIL")
+
+            st.write("Issues:")
+            if result["issues"]:
+                for issue in result["issues"]:
+                    st.write(f"- {issue}")
+            else:
+                st.write("No issues detected.")

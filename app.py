@@ -1,12 +1,11 @@
 import streamlit as st
 
-# -----------------------------
-# Persistent Top Navigation Bar
-# -----------------------------
+# ---------------------------------------------------
+# Top Navigation Bar (always visible, never collapses)
+# ---------------------------------------------------
 def render_navbar():
     st.markdown("""
         <style>
-            /* Top Navigation Bar */
             .topnav {
                 background-color: #0E1117;
                 overflow: hidden;
@@ -26,10 +25,6 @@ def render_navbar():
                 background-color: #262730;
                 color: white;
             }
-            .topnav a.active {
-                background-color: #4CAF50;
-                color: white;
-            }
         </style>
 
         <div class="topnav">
@@ -41,9 +36,9 @@ def render_navbar():
     """, unsafe_allow_html=True)
 
 
-# -----------------------------
-# Page Content
-# -----------------------------
+# ---------------------------------------------------
+# Home Page Content
+# ---------------------------------------------------
 def render_home():
     st.title("Beverage Label Checker")
     st.write("Welcome! Use the navigation bar above to capture a label, upload an image, or review compliance rules.")
@@ -59,25 +54,31 @@ def render_home():
     st.info("Use the **Camera Capture** or **Upload Label** options to begin.")
 
 
-# -----------------------------
-# Simple Router
-# -----------------------------
+# ---------------------------------------------------
+# Router (no switch_page → no StreamlitAPIException)
+# ---------------------------------------------------
 def main():
     st.set_page_config(page_title="Beverage Label Checker", layout="wide")
 
     render_navbar()
 
-    # Determine which page to show
     page = st.query_params.get("page", "Home")
 
     if page == "Home":
         render_home()
+
     elif page == "Camera":
-        st.switch_page("pages/camera_capture.py")
+        import pages.camera_capture as cam
+        cam.render()
+
     elif page == "Upload":
-        st.switch_page("pages/upload_label.py")
+        import pages.upload_label as upl
+        upl.render()
+
     elif page == "Rules":
-        st.switch_page("pages/rules_page.py")
+        import pages.rules_page as rules
+        rules.render()
+
     else:
         render_home()
 
