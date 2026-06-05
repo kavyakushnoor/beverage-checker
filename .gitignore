@@ -36,5 +36,4 @@ Thumbs.db
 *.xlsx
 
 # Uploaded files (optional)
-uploads/
-samples/
+# samples/

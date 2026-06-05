@@ -1,40 +1,52 @@
 import streamlit as st
 import pandas as pd
 
-st.title("📊 Results")
 
-if "results" not in st.session_state or not st.session_state.results:
-    st.warning("No results yet. Upload images or capture from camera.")
-    st.stop()
+def render():
 
-df = pd.DataFrame(st.session_state.results)
+    st.title("Results Dashboard")
 
-st.subheader("Summary Table")
-st.dataframe(df[["file", "status", "issues"]], use_container_width=True)
+    if not st.session_state.results:
+        st.warning("No results available.")
+        return
 
-st.subheader("Detailed Results")
+    df = pd.DataFrame(st.session_state.results)
 
-for row in st.session_state.results:
+    st.subheader("Summary")
+
+    total = len(df)
+    passes = (df["status"] == "PASS").sum()
+    warnings = (df["status"] == "WARNING").sum()
+    fails = (df["status"] == "FAIL").sum()
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    c1.metric("Tests", total)
+    c2.metric("PASS", passes)
+    c3.metric("WARNING", warnings)
+    c4.metric("FAIL", fails)
+
     st.divider()
-    st.write(f"### {row['file']}")
 
-    if row["status"] == "PASS":
-        st.success("PASS")
-    elif row["status"] == "WARNING":
-        st.warning("WARNING")
-    else:
-        st.error("FAIL")
+    st.subheader("Recent Result")
 
-    st.write("Issues:", row["issues"] or "None")
+    latest = st.session_state.results[-1]
 
-    with st.expander("Extracted Text"):
-        st.text(row["text"])
+    st.write(f"File: {latest['file']}")
+    st.write(f"Status: {latest['status']}")
+    st.write(f"Issues: {latest['issues']}")
 
-csv = df.to_csv(index=False)
+    st.divider()
 
-st.download_button(
-    "Download CSV",
-    csv,
-    file_name="beverage_results.csv",
-    mime="text/csv"
-)
+    st.subheader("All Results")
+
+    st.dataframe(df)
+
+    csv = df.to_csv(index=False)
+
+    st.download_button(
+        "Download CSV",
+        csv,
+        file_name="beverage_results.csv",
+        mime="text/csv"
+    )
