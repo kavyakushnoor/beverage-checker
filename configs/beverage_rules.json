@@ -1,0 +1,36 @@
+{
+  "required_words": [
+    "% alc",
+    "vol",
+    "by"
+  ],
+
+  "required_keywords": [
+    "government warning",
+    "surgeon general",
+    "pregnancy",
+    "health problems",
+    "driving",
+    "machinery"
+  ],
+
+  "volume": [
+      "ml",
+      "l",
+      "liter"
+    ],
+
+    "producer_statement": [
+      "distilled",
+      "bottled",
+      "produced",
+      "imported",
+      "by"
+    ],
+
+  "must_contain": [
+    "government warning:",
+    "according to the surgeon general, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects.",
+    "consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems."
+  ]
+}

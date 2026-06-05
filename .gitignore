@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+
+# Streamlit
+.streamlit/secrets.toml
+.streamlit/state.json
+
+# Virtual environments
+venv/
+env/
+.venv/
+bev_chk
+torch_env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Model caches
+~/.cache/
+.cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Data outputs
+*.csv
+*.xlsx
+
+# Uploaded files (optional)
+uploads/
+samples/
